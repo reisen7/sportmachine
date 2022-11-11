@@ -2,11 +2,14 @@ package com.fc.v2.satoken;
 
 import com.fc.v2.model.auto.TsysUser;
 import com.fc.v2.util.BeanUtils;
+
 import cn.dev33.satoken.stp.StpUtil;
 
 /**
  * 封装 Sa-Token 常用操作
+ * 
  * @author kong
+ *
  */
 public class SaTokenUtil {
 
