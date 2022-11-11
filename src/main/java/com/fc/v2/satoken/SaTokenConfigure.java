@@ -1,26 +1,21 @@
 package com.fc.v2.satoken;
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
 import com.fc.v2.common.conf.V2Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import com.alibaba.fastjson.JSON;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.satoken.dialect.SaTokenDialect;
-
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.filter.SaServletFilter;
 import cn.dev33.satoken.interceptor.SaAnnotationInterceptor;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
-
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -86,7 +81,14 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                 .setError(e -> {
                 	// e.printStackTrace();
                     if(e instanceof NotLoginException) {
-                    	SaHolder.getResponse().redirect("/admin/login");
+                    	for (String nourl : satoken_not_urls) {
+							if(nourl.contains(SaHolder.getRequest().getUrl())) {
+								 return JSON.toJSONString(AjaxResult.error(886,e.getMessage()));
+							}
+						}
+                    	//这儿如果是tomcat发布用内部跳转比较好
+                    	//SaHolder.getResponse().redirect("/admin/login");
+                    	SaHolder.getRequest().forward("/admin/login");
                     }
                     return JSON.toJSONString(AjaxResult.error(e.getMessage()));
                 })

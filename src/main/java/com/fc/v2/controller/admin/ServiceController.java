@@ -59,7 +59,6 @@ public class ServiceController extends BaseController {
 		long nd = 1000 * 24 * 60 * 60;
 		long nh = 1000 * 60 * 60;
 		long nm = 1000 * 60;
-		long ns = 1000;
 		// 获得两个时间的毫秒时间差异
 		long diff = oshiMonitor.getJvmInfo().getUptime();
 		// 计算差多少天
