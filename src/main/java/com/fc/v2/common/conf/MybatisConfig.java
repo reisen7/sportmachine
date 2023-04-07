@@ -2,11 +2,13 @@ package com.fc.v2.common.conf;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.fc.v2.common.dataSources.DataSourceType;
 import com.fc.v2.common.dataSources.DynamicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -14,9 +16,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
 
@@ -58,14 +66,37 @@ public class MybatisConfig {
 
     @Bean
     public SqlSessionFactory sqlSessionFactory(DynamicDataSource dynamicDataSource) throws Exception {
-        SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+    	MybatisSqlSessionFactoryBean factoryBean = new MybatisSqlSessionFactoryBean();
         factoryBean.setDataSource(dynamicDataSource);
-//        factoryBean.setTypeAliasesPackage();
         // 设置mapper.xml的位置路径
-        Resource[] resources = new PathMatchingResourcePatternResolver().getResources("classpath*:mybatis/*/*.xml");
-        factoryBean.setMapperLocations(resources);
+         
+        
+        factoryBean.setMapperLocations(resolveMapperLocations());
         return factoryBean.getObject();
     }
+    
+    public Resource[] resolveMapperLocations() {
+        ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
+        List<String> mapperLocations = new ArrayList<>();
+        
+        mapperLocations.add("classpath*:mybatis/*/*.xml");
+        mapperLocations.add("classpath*:mybatis-plus/*.xml");
+        
+        List<Resource> resources = new ArrayList<Resource>();
+        if (mapperLocations != null) {
+            for (String mapperLocation : mapperLocations) {
+                try {
+                    Resource[] mappers = resourceResolver.getResources(mapperLocation);
+                    resources.addAll(Arrays.asList(mappers));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return resources.toArray(new Resource[resources.size()]);
+    }
+
+
     
     /**
      * 配置@Transactional注解事务

@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fc.v2.common.conf.oss.OssTemplate;
 import com.fc.v2.common.domain.AjaxResult;
+import com.fc.v2.service.plus.IMybatisTestService;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -22,6 +24,8 @@ import io.swagger.annotations.ApiOperation;
 public class ApiController {
 	@Autowired
 	private  OssTemplate template;
+	@Autowired
+	private IMybatisTestService iMybatisTestService;
 	
 	
 	@GetMapping("/test")
@@ -30,6 +34,8 @@ public class ApiController {
 		map.put("a", "1");
 		map.put("b", "2");
 		map.put("c", "3");
+		System.out.println(JSONUtil.toJsonPrettyStr(iMybatisTestService.list()));
+		
 		return map;
 		
 	}
