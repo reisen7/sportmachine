@@ -66,6 +66,7 @@ public class MybatisConfig {
 
     @Bean
     public SqlSessionFactory sqlSessionFactory(DynamicDataSource dynamicDataSource) throws Exception {
+    	//核心就是这个，替换原始的SqlSessionFactoryBean 用mybatisSqlSessionFactoryBean即可
     	MybatisSqlSessionFactoryBean factoryBean = new MybatisSqlSessionFactoryBean();
         factoryBean.setDataSource(dynamicDataSource);
         // 设置mapper.xml的位置路径
