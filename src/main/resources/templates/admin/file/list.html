@@ -64,6 +64,7 @@
 
         let MODULE_PATH = rootPath+"/FileController/";
         let BUCKETURL_PATH='[[${bucketURL}]]';
+        console.log(BUCKETURL_PATH)
         let cols = [
             [
                 {type: 'checkbox'},
@@ -146,13 +147,27 @@
         }
         //查看
         window.view = function (obj) {
-            layer.open({
-                type: 2,
-                title: '查看',
-                shade: 0.1,
-                area: ['500px', '500px'],
-                content: BUCKETURL_PATH+"/"+obj.data['fileName']
+            var http = "https://www.baidu.com";
+            $.ajax({
+                url: MODULE_PATH + "over/" + obj.data['fileName'],
+                type: 'get',
+                success: function (res) {
+                    console.log(res);
+                    http = res;
+                    layer.open({
+                        type: 2,
+                        title: '下载',
+                        shade: 0.1,
+                        area: ['500px', '500px'],
+                        content: http
+                        // content: "{:url("+BUCKETURL_PATH+"/"+obj.data['fileName']+")}"
+
+                        // content: "<img style=\"width:500px\" src=\""+BUCKETURL_PATH+"/"+obj.data['fileName']+"\">"
+                    });
+                }
             });
+            console.log(http)
+
         }
 
 

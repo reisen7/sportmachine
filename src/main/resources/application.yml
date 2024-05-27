@@ -1,11 +1,11 @@
 # 项目相关配置
 fuce:
   #名称
-  name: v2
+  name: REUSEB
   #版本
   version: 5
   #版权年份
-  copyright-year: 2018
+  copyright-year: 2024
   #邮件功能
   #邮箱发送smtp
   email-smtp: smtp.sina.com
@@ -26,6 +26,7 @@ fuce:
 #tomcat config
 server :
   port : 8080
+  
   ##项目名字配置
   #servlet :
   #  context-path : /demo
@@ -38,6 +39,9 @@ server :
       max: 128
       min-spare: 5
 spring :
+  output:
+    ansi:
+      enabled: always
   # 环境 dev|test|prod
   profiles :
     active : dev
@@ -82,7 +86,7 @@ spring :
     database: 0
     host: 127.0.0.1
     port: 6379
-    password: 
+    password:
     timeout: 1000
     lettuce:
       pool:
@@ -105,7 +109,7 @@ spring :
 # 控制台输出sql、下划线转驼峰
 mybatis-plus:
   mapper-locations: classpath:/mybatis-plus/*.xml
-  typeAliasesPackage: com.fc.v2.model
+  typeAliasesPackage: com.reisen.model
   # 控制台输出sql、下划线转驼峰
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -121,7 +125,9 @@ oss:
   enable: true
   info: true
   path-style-access: false  #使用云OSS 需要关闭
-  endpoint: http://127.0.0.1:9000 #对应上图 ③ 处配置
-  access-key: minioadmin  # 上文创建的AK
-  secret-key: minioadmin # 上文创建的SK
-  bucket-name: v2-cloud  # 上文创建的桶名称
+  endpoint: oss-cn-beijing.aliyuncs.com #对应上图 ③ 处配置
+  access-key: LTAI5t8USYAupgxokTsCd28z  # 上文创建的AK
+  secret-key: FJ5c90Mjp1mnCbA04wSwWa9txAHGUs # 上文创建的SK
+  bucket-name: sportmachine  # 上文创建的桶名称
+
+ai-key: sk-44ea43ae41f748fba206a3c7b6d8f3e8

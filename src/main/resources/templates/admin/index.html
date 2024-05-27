@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:include="include :: header('springboot-v2 开发平台')"/>
+    <th:block th:include="include :: header('体育馆器材管理系统')"/>
     <link rel="stylesheet" th:href="@{/static/admin/css/load.css}"/>
     <link rel="stylesheet" th:href="@{/static/admin/css/admin.css}"/>
     <!-- 主 题 更 换 -->
@@ -26,11 +26,14 @@
                     <span class="layui-badge" th:text="${session.notices.size()}"></span>
                 </a>-->
 
-
                 <a id="menu-msg" class="layui-icon layui-icon-notice" menu-type="1" th:menu-url="@{/SysNoticeController/viewUser}" menu-id="n4" href="javascript:;">
                     <span class="layui-badge" th:text="${session.notices.size()}"></span>
                 </a>
 
+            </li>
+            <li class="layui-nav-item layui-hide-xs">
+                <button class="pear-btn pear-btn-warming pear-btn-md" onclick="selectRole()" title="智能小助手"><i class="layui-icon layui-icon-template"></i>
+                </button>
             </li>
             <li class="layui-nav-item">
                 <!-- 头 像 -->
@@ -44,7 +47,6 @@
                     <dd><a href="javascript:void(0);" class="logout">注销登录</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item setting"><a href="#" class="layui-icon layui-icon-more-vertical"></a></li>
         </ul>
     </div>
     <!-- 侧 边 区 域 -->
@@ -97,7 +99,7 @@
      			success: function(result) {
      				if (result.code==200) {
      					popup.success(result.msg, function() {
-     						location.href = rootPath+"/";
+     						location.href = rootPath+"/admin/login";
                         });
                         return true;
      				}
@@ -110,7 +112,16 @@
         
 
     })
-
+    //选择角色弹层
+    function selectRole(){
+        layer.open({
+            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type:2,
+            title:"智能助手",
+            area: ['50%','85%'],
+            content:  rootPath + "/AiController/view"
+        });
+    }
 </script>
 </body>
 </html>

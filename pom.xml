@@ -13,7 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>v2</name>
 	<packaging>war</packaging>
-    <description>springboot-v2-pear</description>
+    <description>springboot-pear</description>
 
     <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,11 +25,25 @@
 
     <!-- https://mvnrepository.com/ 查找jar网站 -->
 	<dependencies>
-	
+	    <!-- springboot 容器 -->
+	    <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+		<!-- 阿里 oss 存储 -->
+		<dependency>
+			<groupId>com.aliyun.oss</groupId>
+			<artifactId>aliyun-sdk-oss</artifactId>
+			<version>3.10.2</version>
+		</dependency>
+
+
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
+
 		<dependency>
 		  <groupId>org.apache.commons</groupId>
 		  <artifactId>commons-pool2</artifactId>
@@ -47,6 +61,23 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.5.0</version>
         </dependency>
+
+
+
+		<!-- https://mvnrepository.com/artifact/com.alibaba/dashscope-sdk-java -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dashscope-sdk-java</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+
+		<!--ok http client-->
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>4.10.0</version>
+		</dependency>
+
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
@@ -124,6 +155,7 @@
 		    <version>1.26.0</version>
 		</dependency>
 		<!-- Sa-Token 整合 Redis （使用jackson序列化方式） -->
+
 		<dependency>
 		    <groupId>cn.dev33</groupId>
 		    <artifactId>sa-token-dao-redis-jackson</artifactId>
@@ -287,7 +319,7 @@
                              <artifactId>nothing</artifactId>
                          </include>
                          <include>
-                             <groupId>com.fc.V2Application</groupId>
+                             <groupId>com.reisenApplication</groupId>
                              <artifactId>common</artifactId>
                          </include>
                      </includes>

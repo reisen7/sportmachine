@@ -7,15 +7,15 @@ spring:
     druid:
      #主库数据源
      master:
-        url: jdbc:mysql://localhost:3306/springbootv2?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT
+        url: jdbc:mysql://127.0.0.1:3306/sportmachine?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT
         username: root
-        password: root
+        password: 123456
      #备数据源 #关闭
      slave:
-        enabled: false
-        url: jdbc:mysql://localhost:3306/springbootv3?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT&autoReconnect=true&useSSL=false
-        username: root
-        password: root
+        enabled: true
+        url: jdbc:mysql://60.204.200.91:3306/gaokao?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT&autoReconnect=true&useSSL=false
+        username: gaokao
+        password: MHDnC23jwYNMRJdz
         #配置初始化连接数大小
      initial-size: 10
      # 最大连接数

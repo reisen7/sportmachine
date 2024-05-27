@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('器材借用修改')"/>
+</head>
+<body>
+<form class="layui-form" action=""  th:object="${Qicaijieyong}">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+
+						<div class="layui-form-item layui-hide">
+		                    <label class="layui-form-label">主键</label>
+		                    <div class="layui-input-block">
+		                        <input type="text" th:value="*{id}" name="id" lay-verify="title"
+		                               autocomplete="off" class="layui-input">
+		                    </div>
+		                </div>
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">创建时间</label>
+		                    <div class="layui-input-block">
+		                        <input type="text" th:value="${Qicaijieyong.dateToStringConvert(Qicaijieyong.addtime)}" name="addtime" autocomplete="off" placeholder="创建时间" class="layui-input datetime-input">
+		                        
+		                    </div>
+		                </div>
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">借用编号</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{jieyongbianhao}" type="text" name="jieyongbianhao" autocomplete="off" placeholder="借用编号" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">器材名称</label>
+		                    <div class="layui-input-block">
+<!--		                        <input th:value="*{qicaimingcheng}" type="text" name="qicaimingcheng" autocomplete="off" placeholder="器材名称" class="layui-input">-->
+								<select lay-verify="required" name="qicaimingcheng" lay-filter="selectOnchange">
+									<option ></option>
+									<option
+											th:each="item:${list}"
+											th:value="${item.id}"
+											th:text="${item.qicaimingcheng}" th:selected="${item.id} eq ${Qicaijieyong.qicaimingcheng}">
+									</option>
+								</select>
+							</div>
+		                </div>
+					                
+		
+					
+<!--						<div class="layui-form-item">-->
+<!--		                    <label class="layui-form-label">器材类型</label>-->
+<!--		                    <div class="layui-input-block">-->
+<!--		                    	-->
+<!--		                    	<select name="qicaileixing"  th:field="*{qicaileixing}" th:with="type=${@dict.getType('machine_type')}">-->
+<!--									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+<!--								</select>-->
+<!--		                    	-->
+<!--		                    </div>-->
+<!--		                </div>-->
+<!--		-->
+<!--					-->
+<!--						<div class="layui-form-item">-->
+<!--		                    <label class="layui-form-label">规格</label>-->
+<!--		                    <div class="layui-input-block">-->
+<!--		                        <input th:value="*{guige}" type="text" name="guige" autocomplete="off" placeholder="规格" class="layui-input">-->
+<!--		                    </div>-->
+<!--		                </div>-->
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">数量</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{shuliang}" type="text" name="shuliang" autocomplete="off" placeholder="数量" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">注意事项</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{zhuyishixiang}" type="text" name="zhuyishixiang" autocomplete="off" placeholder="注意事项" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">账号</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{zhanghao}" type="text" name="zhanghao" autocomplete="off" placeholder="账号" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">姓名</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{xingming}" type="text" name="xingming" autocomplete="off" placeholder="姓名" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">手机</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{shouji}" type="text" name="shouji" autocomplete="off" placeholder="手机" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">借用时间</label>
+		                    <div class="layui-input-block">
+		                        <input type="text" th:value="${Qicaijieyong.dateToStringConvert(Qicaijieyong.jieyongshijian)}" name="jieyongshijian" autocomplete="off" placeholder="借用时间" class="layui-input datetime-input">
+		                        
+		                    </div>
+		                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit=""
+                    lay-filter="qicaijieyong-update">
+                <i class="layui-icon layui-icon-ok"></i>
+				提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+				重置
+            </button>
+        </div>
+    </div>
+</form>
+<th:block th:include="include :: footer"/>
+<script>
+    layui.use(['form','laydate','jquery'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+        let MODULE_PATH = rootPath+"/QicaijieyongController";
+		var laydate = layui.laydate;
+        //同时绑定多个
+        lay('.datetime-input').each(function(){
+          laydate.render({
+            elem: this
+            ,trigger: 'click'
+            ,type: 'datetime'
+          });
+        });
+
+
+        form.on('submit(qicaijieyong-update)', function (data) {
+        	let loader = layer.load();
+            $.ajax({
+                url: MODULE_PATH+'/edit',
+                data: data.field,
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded',
+                type: 'post',
+                success: function (result) {
+                    if (result.code==200) {
+                        layer.msg(result.msg, {icon: 1, time: 1000}, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                            parent.layui.table.reload("qicaijieyong-table");
+                            layer.close(loader);
+                        });
+                    } else {
+                        layer.msg(result.msg, {icon: 2, time: 1000});
+                        layer.close(loader);
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

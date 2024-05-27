@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('器材报修修改')"/>
+</head>
+<body>
+<form class="layui-form" action=""  th:object="${Tbreportrecord}">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+
+						<div class="layui-form-item layui-hide">
+		                    <label class="layui-form-label">主键</label>
+		                    <div class="layui-input-block">
+		                        <input type="text" th:value="*{id}" name="id" lay-verify="title"
+		                               autocomplete="off" class="layui-input">
+		                    </div>
+		                </div>
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">器材id</label>
+		                    <div class="layui-input-block">
+<!--		                        <input th:value="*{equimentid}" type="text" name="equimentid" autocomplete="off" placeholder="器材id" class="layui-input">-->
+
+								<select lay-verify="required" name="equimentid" lay-filter="selectOnchange" >
+									<option ></option>
+									<option
+											th:each="item:${qicai}"
+											th:value="${item.id}"
+											th:text="${item.id}" th:selected="${item.id} eq ${Tbreportrecord.equimentid}">
+									</option>
+								</select>
+
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">器材名称</label>
+		                    <div class="layui-input-block">
+<!--		                        <input th:value="*{name}" type="text" name="name" autocomplete="off" placeholder="器材名称" class="layui-input">-->
+								<select lay-verify="required" name="name" lay-filter="selectOnchange" >
+									<option ></option>
+									<option
+											th:each="item:${qicai}"
+											th:value="${item.qicaimingcheng}"
+											th:text="${item.qicaimingcheng}" th:selected="${item.qicaimingcheng} eq ${Tbreportrecord.name}">
+									</option>
+								</select>
+
+							</div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">用户id</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{userid}" type="text" name="userid" autocomplete="off" placeholder="用户id" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">报修日期</label>
+		                    <div class="layui-input-block">
+		                        <input type="text" th:value="${Tbreportrecord.dateToStringConvert(Tbreportrecord.reportdate)}" name="reportdate" autocomplete="off" placeholder="报修日期" class="layui-input datetime-input">
+		                        
+		                    </div>
+		                </div>
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">问题描述</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{problemdes}" type="text" name="problemdes" autocomplete="off" placeholder="问题描述" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">报修状态</label>
+		                    <div class="layui-input-block">
+		                    	
+		                    	<select name="status"  th:field="*{status}" th:with="type=${@dict.getType('status_type')}">
+									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+								</select>
+		                    	
+		                    </div>
+		                </div>
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">用户姓名</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{username}" type="text" name="username" autocomplete="off" placeholder="用户姓名" class="layui-input">
+		                    </div>
+		                </div>
+					                
+
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit=""
+                    lay-filter="tbreportrecord-update">
+                <i class="layui-icon layui-icon-ok"></i>
+				提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+				重置
+            </button>
+        </div>
+    </div>
+</form>
+<th:block th:include="include :: footer"/>
+<script>
+    layui.use(['form','laydate','jquery'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+        let MODULE_PATH = rootPath+"/TbreportrecordController";
+		var laydate = layui.laydate;
+        //同时绑定多个
+        lay('.datetime-input').each(function(){
+          laydate.render({
+            elem: this
+            ,trigger: 'click'
+            ,type: 'datetime'
+          });
+        });
+
+
+        form.on('submit(tbreportrecord-update)', function (data) {
+        	let loader = layer.load();
+            $.ajax({
+                url: MODULE_PATH+'/edit',
+                data: data.field,
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded',
+                type: 'post',
+                success: function (result) {
+                    if (result.code==200) {
+                        layer.msg(result.msg, {icon: 1, time: 1000}, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                            parent.layui.table.reload("tbreportrecord-table");
+                            layer.close(loader);
+                        });
+                    } else {
+                        layer.msg(result.msg, {icon: 2, time: 1000});
+                        layer.close(loader);
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

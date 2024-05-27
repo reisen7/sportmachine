@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reisen.mapper.auto.QicaiguihaiMapper">
+  <resultMap id="BaseResultMap" type="com.reisen.model.auto.Qicaiguihai">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="qicaimingcheng" jdbcType="VARCHAR" property="qicaimingcheng" />
+    <result column="qicaileixing" jdbcType="VARCHAR" property="qicaileixing" />
+    <result column="guige" jdbcType="VARCHAR" property="guige" />
+    <result column="jieyongbianhao" jdbcType="VARCHAR" property="jieyongbianhao" />
+    <result column="zhuyishixiang" jdbcType="VARCHAR" property="zhuyishixiang" />
+    <result column="shuliang" jdbcType="INTEGER" property="shuliang" />
+    <result column="zhanghao" jdbcType="VARCHAR" property="zhanghao" />
+    <result column="xingming" jdbcType="VARCHAR" property="xingming" />
+    <result column="shouji" jdbcType="VARCHAR" property="shouji" />
+    <result column="guihaishijian" jdbcType="TIMESTAMP" property="guihaishijian" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+  
+     	id,
+     	addtime,
+     	qicaimingcheng,
+     	qicaileixing,
+     	guige,
+     	jieyongbianhao,
+     	zhuyishixiang,
+     	shuliang,
+     	zhanghao,
+     	xingming,
+     	shouji,
+   	  	guihaishijian
+  	
+  </sql>
+  
+  <select id="selectByExample" parameterType="com.reisen.model.auto.QicaiguihaiExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from qicaiguihai
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from qicaiguihai
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from qicaiguihai
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.reisen.model.auto.QicaiguihaiExample">
+    delete from qicaiguihai
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <insert id="insert" parameterType="com.reisen.model.auto.Qicaiguihai">
+    insert into qicaiguihai (
+      id,
+      addtime,
+      qicaimingcheng,
+      qicaileixing,
+      guige,
+      jieyongbianhao,
+      zhuyishixiang,
+      shuliang,
+      zhanghao,
+      xingming,
+      shouji,
+   	  guihaishijian
+    )
+    values (
+     	#{id,jdbcType=BIGINT},
+     	#{addtime,jdbcType=TIMESTAMP},
+     	#{qicaimingcheng,jdbcType=VARCHAR},
+     	#{qicaileixing,jdbcType=VARCHAR},
+     	#{guige,jdbcType=VARCHAR},
+     	#{jieyongbianhao,jdbcType=VARCHAR},
+     	#{zhuyishixiang,jdbcType=VARCHAR},
+     	#{shuliang,jdbcType=INTEGER},
+     	#{zhanghao,jdbcType=VARCHAR},
+     	#{xingming,jdbcType=VARCHAR},
+     	#{shouji,jdbcType=VARCHAR},
+   	  #{guihaishijian,jdbcType=TIMESTAMP}
+    )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.reisen.model.auto.Qicaiguihai">
+    insert into qicaiguihai
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+    
+      <if test="id != null">
+        id,
+      </if>
+    
+      <if test="addtime != null">
+        addtime,
+      </if>
+    
+      <if test="qicaimingcheng != null">
+        qicaimingcheng,
+      </if>
+    
+      <if test="qicaileixing != null">
+        qicaileixing,
+      </if>
+    
+      <if test="guige != null">
+        guige,
+      </if>
+    
+      <if test="jieyongbianhao != null">
+        jieyongbianhao,
+      </if>
+    
+      <if test="zhuyishixiang != null">
+        zhuyishixiang,
+      </if>
+    
+      <if test="shuliang != null">
+        shuliang,
+      </if>
+    
+      <if test="zhanghao != null">
+        zhanghao,
+      </if>
+    
+      <if test="xingming != null">
+        xingming,
+      </if>
+    
+      <if test="shouji != null">
+        shouji,
+      </if>
+    
+      <if test="guihaishijian != null">
+        guihaishijian,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qicaimingcheng != null">
+        #{qicaimingcheng,jdbcType=VARCHAR},
+      </if>
+      <if test="qicaileixing != null">
+        #{qicaileixing,jdbcType=VARCHAR},
+      </if>
+      <if test="guige != null">
+        #{guige,jdbcType=VARCHAR},
+      </if>
+      <if test="jieyongbianhao != null">
+        #{jieyongbianhao,jdbcType=VARCHAR},
+      </if>
+      <if test="zhuyishixiang != null">
+        #{zhuyishixiang,jdbcType=VARCHAR},
+      </if>
+      <if test="shuliang != null">
+        #{shuliang,jdbcType=INTEGER},
+      </if>
+      <if test="zhanghao != null">
+        #{zhanghao,jdbcType=VARCHAR},
+      </if>
+      <if test="xingming != null">
+        #{xingming,jdbcType=VARCHAR},
+      </if>
+      <if test="shouji != null">
+        #{shouji,jdbcType=VARCHAR},
+      </if>
+      <if test="guihaishijian != null">
+        #{guihaishijian,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="countByExample" parameterType="com.reisen.model.auto.QicaiguihaiExample" resultType="java.lang.Long">
+    select count(*) from qicaiguihai
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <update id="updateByExampleSelective" parameterType="map">
+    update qicaiguihai
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addtime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.qicaimingcheng != null">
+        qicaimingcheng = #{record.qicaimingcheng,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qicaileixing != null">
+        qicaileixing = #{record.qicaileixing,jdbcType=VARCHAR},
+      </if>
+      <if test="record.guige != null">
+        guige = #{record.guige,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jieyongbianhao != null">
+        jieyongbianhao = #{record.jieyongbianhao,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zhuyishixiang != null">
+        zhuyishixiang = #{record.zhuyishixiang,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shuliang != null">
+        shuliang = #{record.shuliang,jdbcType=INTEGER},
+      </if>
+      <if test="record.zhanghao != null">
+        zhanghao = #{record.zhanghao,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xingming != null">
+        xingming = #{record.xingming,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shouji != null">
+        shouji = #{record.shouji,jdbcType=VARCHAR},
+      </if>
+      <if test="record.guihaishijian != null">
+        guihaishijian = #{record.guihaishijian,jdbcType=TIMESTAMP},
+      </if>
+     
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  
+  <update id="updateByExample" parameterType="map">
+    update qicaiguihai
+    set
+    	 
+    	 id = #{record.id,jdbcType=BIGINT},
+    	 
+    	 addtime = #{record.addtime,jdbcType=TIMESTAMP},
+    	 
+    	 qicaimingcheng = #{record.qicaimingcheng,jdbcType=VARCHAR},
+    	 
+    	 qicaileixing = #{record.qicaileixing,jdbcType=VARCHAR},
+    	 
+    	 guige = #{record.guige,jdbcType=VARCHAR},
+    	 
+    	 jieyongbianhao = #{record.jieyongbianhao,jdbcType=VARCHAR},
+    	 
+    	 zhuyishixiang = #{record.zhuyishixiang,jdbcType=VARCHAR},
+    	 
+    	 shuliang = #{record.shuliang,jdbcType=INTEGER},
+    	 
+    	 zhanghao = #{record.zhanghao,jdbcType=VARCHAR},
+    	 
+    	 xingming = #{record.xingming,jdbcType=VARCHAR},
+    	 
+    	 shouji = #{record.shouji,jdbcType=VARCHAR},
+    	 
+    	 guihaishijian = #{record.guihaishijian,jdbcType=TIMESTAMP}
+    
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.reisen.model.auto.Qicaiguihai">
+    update qicaiguihai
+    <set>
+      
+      <if test="addtime != null ">
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      
+      <if test="qicaimingcheng != null ">
+        qicaimingcheng = #{qicaimingcheng,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="qicaileixing != null ">
+        qicaileixing = #{qicaileixing,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="guige != null ">
+        guige = #{guige,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="jieyongbianhao != null ">
+        jieyongbianhao = #{jieyongbianhao,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="zhuyishixiang != null ">
+        zhuyishixiang = #{zhuyishixiang,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="shuliang != null ">
+        shuliang = #{shuliang,jdbcType=INTEGER},
+      </if>
+      
+      <if test="zhanghao != null ">
+        zhanghao = #{zhanghao,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="xingming != null ">
+        xingming = #{xingming,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="shouji != null ">
+        shouji = #{shouji,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="guihaishijian != null ">
+        guihaishijian = #{guihaishijian,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    
+    where 
+    
+    id = #{id,jdbcType=BIGINT}
+  
+  </update>
+
+	
+
+  <update id="updateByPrimaryKey" parameterType="com.reisen.model.auto.Qicaiguihai">
+    update qicaiguihai
+    set 
+	  
+		addtime = #{addtime,jdbcType=TIMESTAMP},
+	  
+		qicaimingcheng = #{qicaimingcheng,jdbcType=VARCHAR},
+	  
+		qicaileixing = #{qicaileixing,jdbcType=VARCHAR},
+	  
+		guige = #{guige,jdbcType=VARCHAR},
+	  
+		jieyongbianhao = #{jieyongbianhao,jdbcType=VARCHAR},
+	  
+		zhuyishixiang = #{zhuyishixiang,jdbcType=VARCHAR},
+	  
+		shuliang = #{shuliang,jdbcType=INTEGER},
+	  
+		zhanghao = #{zhanghao,jdbcType=VARCHAR},
+	  
+		xingming = #{xingming,jdbcType=VARCHAR},
+	  
+		shouji = #{shouji,jdbcType=VARCHAR},
+		
+		guihaishijian = #{guihaishijian,jdbcType=TIMESTAMP}
+	
+    where 
+    
+    id = #{id,jdbcType=BIGINT}
+    
+  </update>
+  
+   
+</mapper>

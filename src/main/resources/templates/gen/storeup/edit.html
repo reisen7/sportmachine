@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('收藏表修改')"/>
+</head>
+<body>
+<form class="layui-form" action=""  th:object="${Storeup}">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+
+						<div class="layui-form-item layui-hide">
+		                    <label class="layui-form-label">主键</label>
+		                    <div class="layui-input-block">
+		                        <input type="text" th:value="*{id}" name="id" lay-verify="title"
+		                               autocomplete="off" class="layui-input">
+		                    </div>
+		                </div>
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">创建时间</label>
+		                    <div class="layui-input-block">
+		                        <input type="text" th:value="${Storeup.dateToStringConvert(Storeup.addtime)}" name="addtime" autocomplete="off" placeholder="创建时间" class="layui-input datetime-input">
+		                        
+		                    </div>
+		                </div>
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">用户id</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{userid}" type="text" name="userid" autocomplete="off" placeholder="用户id" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">收藏id</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{refid}" type="text" name="refid" autocomplete="off" placeholder="收藏id" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">表名</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{tablename}" type="text" name="tablename" autocomplete="off" placeholder="表名" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">收藏名称</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{name}" type="text" name="name" autocomplete="off" placeholder="收藏名称" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					             
+		              	<div class="layui-form-item layui-hide">
+		                    <label class="layui-form-label">收藏图片</label>
+		                    <div class="layui-input-block">
+		                        <input type="text" name="picture" id="picture" autocomplete="off" placeholder="收藏图片" class="layui-input">
+		                    </div>
+		                </div>
+		                
+		                <div class="layui-form-item">
+		                    <label class="layui-form-label">收藏图片</label>
+		                    <div class="layui-input-block">
+		                        <div class="layui-upload-drag" id="picture_ImgUpload">
+		                          <i class="layui-icon"></i>
+		                          <p>点击上传，或将文件拖拽到此处</p>
+		                          <div class="layui-hide" id="picture_ImgUpload_View">
+		                            <hr>
+		                            <img src="" alt="上传成功后渲染" style="max-width: 196px">
+		                          </div>
+		                        </div>
+		                    </div>
+		                </div>
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">类型& #40;1:收藏,21:赞,22:踩& #41;</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{type}" type="text" name="type" autocomplete="off" placeholder="类型& #40;1:收藏,21:赞,22:踩& #41;" class="layui-input">
+		                    </div>
+		                </div>
+					                
+		
+					
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">推荐类型</label>
+		                    <div class="layui-input-block">
+		                        <input th:value="*{inteltype}" type="text" name="inteltype" autocomplete="off" placeholder="推荐类型" class="layui-input">
+		                    </div>
+		                </div>
+					                
+
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit=""
+                    lay-filter="storeup-update">
+                <i class="layui-icon layui-icon-ok"></i>
+				提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+				重置
+            </button>
+        </div>
+    </div>
+</form>
+<th:block th:include="include :: footer"/>
+<script>
+    layui.use(['form','laydate','upload','jquery'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+        let MODULE_PATH = rootPath+"/StoreupController";
+			let FILE_PATH = rootPath+"/oss";
+			let upload = layui.upload;
+			let BucketName='[[${BucketName}]]';
+		var laydate = layui.laydate;
+        //同时绑定多个
+        lay('.datetime-input').each(function(){
+          laydate.render({
+            elem: this
+            ,trigger: 'click'
+            ,type: 'datetime'
+          });
+        });
+
+
+		//拖拽上传 文档：https://www.layui.com/doc/modules/upload.html
+		upload.render({
+			elem: '#picture_ImgUpload'
+			,url: FILE_PATH+"/object/"+BucketName //改成您自己的上传接口
+			,field: 'object' //设定文件域的字段名
+			,done: function(result){
+				console.log(result);
+				if (result.code==200) {
+					layer.msg('上传成功');
+					layui.$('#picture_ImgUpload_View').removeClass('layui-hide').find('img').attr('src', result.data.objectContent.httpRequest.uri);
+					if(result.data.key!=null){
+						$("#picture").val(result.data.key);
+					}
+				} else {
+					layer.msg(result.msg, {icon: 2, time: 1000});
+				}
+			}
+		});
+
+
+        form.on('submit(storeup-update)', function (data) {
+        	let loader = layer.load();
+            $.ajax({
+                url: MODULE_PATH+'/edit',
+                data: data.field,
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded',
+                type: 'post',
+                success: function (result) {
+                    if (result.code==200) {
+                        layer.msg(result.msg, {icon: 1, time: 1000}, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                            parent.layui.table.reload("storeup-table");
+                            layer.close(loader);
+                        });
+                    } else {
+                        layer.msg(result.msg, {icon: 2, time: 1000});
+                        layer.close(loader);
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

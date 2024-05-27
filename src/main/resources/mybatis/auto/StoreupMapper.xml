@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reisen.mapper.auto.StoreupMapper">
+  <resultMap id="BaseResultMap" type="com.reisen.model.auto.Storeup">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="userid" jdbcType="BIGINT" property="userid" />
+    <result column="refid" jdbcType="BIGINT" property="refid" />
+    <result column="tablename" jdbcType="VARCHAR" property="tablename" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="inteltype" jdbcType="VARCHAR" property="inteltype" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+  
+     	id,
+     	addtime,
+     	userid,
+     	refid,
+     	tablename,
+     	name,
+     	picture,
+     	type,
+   	  	inteltype
+  	
+  </sql>
+  
+  <select id="selectByExample" parameterType="com.reisen.model.auto.StoreupExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from storeup
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from storeup
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from storeup
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.reisen.model.auto.StoreupExample">
+    delete from storeup
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <insert id="insert" parameterType="com.reisen.model.auto.Storeup">
+    insert into storeup (
+      id,
+      addtime,
+      userid,
+      refid,
+      tablename,
+      name,
+      picture,
+      type,
+   	  inteltype
+    )
+    values (
+     	#{id,jdbcType=BIGINT},
+     	#{addtime,jdbcType=TIMESTAMP},
+     	#{userid,jdbcType=BIGINT},
+     	#{refid,jdbcType=BIGINT},
+     	#{tablename,jdbcType=VARCHAR},
+     	#{name,jdbcType=VARCHAR},
+     	#{picture,jdbcType=VARCHAR},
+     	#{type,jdbcType=VARCHAR},
+   	  #{inteltype,jdbcType=VARCHAR}
+    )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.reisen.model.auto.Storeup">
+    insert into storeup
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+    
+      <if test="id != null">
+        id,
+      </if>
+    
+      <if test="addtime != null">
+        addtime,
+      </if>
+    
+      <if test="userid != null">
+        userid,
+      </if>
+    
+      <if test="refid != null">
+        refid,
+      </if>
+    
+      <if test="tablename != null">
+        tablename,
+      </if>
+    
+      <if test="name != null">
+        name,
+      </if>
+    
+      <if test="picture != null">
+        picture,
+      </if>
+    
+      <if test="type != null">
+        type,
+      </if>
+    
+      <if test="inteltype != null">
+        inteltype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="refid != null">
+        #{refid,jdbcType=BIGINT},
+      </if>
+      <if test="tablename != null">
+        #{tablename,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="inteltype != null">
+        #{inteltype,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="countByExample" parameterType="com.reisen.model.auto.StoreupExample" resultType="java.lang.Long">
+    select count(*) from storeup
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <update id="updateByExampleSelective" parameterType="map">
+    update storeup
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addtime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userid != null">
+        userid = #{record.userid,jdbcType=BIGINT},
+      </if>
+      <if test="record.refid != null">
+        refid = #{record.refid,jdbcType=BIGINT},
+      </if>
+      <if test="record.tablename != null">
+        tablename = #{record.tablename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picture != null">
+        picture = #{record.picture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inteltype != null">
+        inteltype = #{record.inteltype,jdbcType=VARCHAR},
+      </if>
+     
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  
+  <update id="updateByExample" parameterType="map">
+    update storeup
+    set
+    	 
+    	 id = #{record.id,jdbcType=BIGINT},
+    	 
+    	 addtime = #{record.addtime,jdbcType=TIMESTAMP},
+    	 
+    	 userid = #{record.userid,jdbcType=BIGINT},
+    	 
+    	 refid = #{record.refid,jdbcType=BIGINT},
+    	 
+    	 tablename = #{record.tablename,jdbcType=VARCHAR},
+    	 
+    	 name = #{record.name,jdbcType=VARCHAR},
+    	 
+    	 picture = #{record.picture,jdbcType=VARCHAR},
+    	 
+    	 type = #{record.type,jdbcType=VARCHAR},
+    	 
+    	 inteltype = #{record.inteltype,jdbcType=VARCHAR}
+    
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.reisen.model.auto.Storeup">
+    update storeup
+    <set>
+      
+      <if test="addtime != null ">
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      
+      <if test="userid != null ">
+        userid = #{userid,jdbcType=BIGINT},
+      </if>
+      
+      <if test="refid != null ">
+        refid = #{refid,jdbcType=BIGINT},
+      </if>
+      
+      <if test="tablename != null ">
+        tablename = #{tablename,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="name != null ">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="picture != null ">
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="type != null ">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="inteltype != null ">
+        inteltype = #{inteltype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    
+    where 
+    
+    id = #{id,jdbcType=BIGINT}
+  
+  </update>
+
+	
+
+  <update id="updateByPrimaryKey" parameterType="com.reisen.model.auto.Storeup">
+    update storeup
+    set 
+	  
+		addtime = #{addtime,jdbcType=TIMESTAMP},
+	  
+		userid = #{userid,jdbcType=BIGINT},
+	  
+		refid = #{refid,jdbcType=BIGINT},
+	  
+		tablename = #{tablename,jdbcType=VARCHAR},
+	  
+		name = #{name,jdbcType=VARCHAR},
+	  
+		picture = #{picture,jdbcType=VARCHAR},
+	  
+		type = #{type,jdbcType=VARCHAR},
+		
+		inteltype = #{inteltype,jdbcType=VARCHAR}
+	
+    where 
+    
+    id = #{id,jdbcType=BIGINT}
+    
+  </update>
+  
+   
+</mapper>

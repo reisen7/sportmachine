@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('器材维护新增')"/>
+</head>
+<body>
+<form class="layui-form">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+
+							<div class="layui-form-item">
+			                    <label class="layui-form-label">器材id</label>
+			                    <div class="layui-input-block">
+<!--			                        <input type="text" name="equipmentid" autocomplete="off" placeholder="器材id" class="layui-input">-->
+
+									<select lay-verify="required" id="selectQicai" name="equipmentid" lay-filter="selectOnchange">
+										<option ></option>
+										<option
+												th:each="item:${qicai}"
+												th:value="${item.id}"
+												th:text="${item.id}" >
+										</option>
+									</select>
+
+								</div>
+			                </div>
+		
+
+							<div class="layui-form-item">
+			                    <label class="layui-form-label">器材名称</label>
+			                    <div class="layui-input-block">
+<!--			                        <input type="text" name="name" autocomplete="off" placeholder="器材名称" class="layui-input">-->
+
+									<select lay-verify="required" name="name" lay-filter="selectOnchange">
+										<option ></option>
+										<option
+												th:each="item:${qicai}"
+												th:value="${item.qicaimingcheng}"
+												th:text="${item.qicaimingcheng}" >
+										</option>
+									</select>
+
+								</div>
+			                </div>
+		
+
+							<div class="layui-form-item">
+			                    <label class="layui-form-label">用户id</label>
+			                    <div class="layui-input-block">
+			                        <input type="text" name="userid" autocomplete="off" placeholder="用户id" class="layui-input">
+			                    </div>
+			                </div>
+		
+
+							<div class="layui-form-item">
+			                    <label class="layui-form-label">维护日期</label>
+			                    <div class="layui-input-block">
+			                        <input type="text" name="maintenancedate" autocomplete="off" placeholder="维护日期" class="layui-input datetime-input">
+			                    </div>
+			                </div>
+		
+
+							<div class="layui-form-item">
+			                    <label class="layui-form-label">维护内容</label>
+			                    <div class="layui-input-block">
+			                        <input type="text" name="maintenanceContent" autocomplete="off" placeholder="维护内容" class="layui-input">
+			                    </div>
+			                </div>
+		
+
+							<div class="layui-form-item">
+			                    <label class="layui-form-label">维护状态</label>
+			                    <div class="layui-input-block">
+			                        
+			                    	<select name="status" th:with="type=${@dict.getType('status_type')}">
+										<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+									</select>
+			                    	
+			                    </div>
+			                </div>
+		
+
+							<div class="layui-form-item">
+			                    <label class="layui-form-label">用户姓名</label>
+			                    <div class="layui-input-block">
+			                        <input type="text" name="username" autocomplete="off" placeholder="用户姓名" class="layui-input">
+			                    </div>
+			                </div>
+		
+
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="tbmaintenacerecord-save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+<th:block th:include="include :: footer"/>
+<script>
+    layui.use(['form','laydate','jquery'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+        let MODULE_PATH = rootPath+"/TbmaintenacerecordController";
+		var laydate = layui.laydate;
+        //同时绑定多个
+        lay('.datetime-input').each(function(){
+          laydate.render({
+            elem: this
+            ,trigger: 'click'
+            ,type: 'datetime'
+          });
+        });
+
+
+        //保存
+        form.on('submit(tbmaintenacerecord-save)', function (data) {
+        	let loader = layer.load();
+            $.ajax({
+                url: MODULE_PATH+'/add',
+                data: data.field,
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded',
+                type: 'post',
+                success: function (result) {
+                    if (result.code==200) {
+                        layer.msg(result.msg, {icon: 1, time: 1000}, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                            parent.layui.table.reload("tbmaintenacerecord-table");
+                            layer.close(loader);
+                        });
+                    } else {
+                        layer.msg(result.msg, {icon: 2, time: 1000});
+                        layer.close(loader);
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>
