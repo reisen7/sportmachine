@@ -25,24 +25,24 @@
 			                </div>
 		
 
-							<div class="layui-form-item">
-			                    <label class="layui-form-label">器材类型</label>
-			                    <div class="layui-input-block">
-			                        
-			                    	<select name="qicaileixing" th:with="type=${@dict.getType('machine_type')}">
-										<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-									</select>
-			                    	
-			                    </div>
-			                </div>
+<!--							<div class="layui-form-item">-->
+<!--			                    <label class="layui-form-label">器材类型</label>-->
+<!--			                    <div class="layui-input-block">-->
+<!--			                        -->
+<!--			                    	<select name="qicaileixing" th:with="type=${@dict.getType('machine_type')}">-->
+<!--										<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+<!--									</select>-->
+<!--			                    	-->
+<!--			                    </div>-->
+<!--			                </div>-->
 		
 
-							<div class="layui-form-item">
-			                    <label class="layui-form-label">规格</label>
-			                    <div class="layui-input-block">
-			                        <input type="text" name="guige" autocomplete="off" placeholder="规格" class="layui-input">
-			                    </div>
-			                </div>
+<!--							<div class="layui-form-item">-->
+<!--			                    <label class="layui-form-label">规格</label>-->
+<!--			                    <div class="layui-input-block">-->
+<!--			                        <input type="text" name="guige" autocomplete="off" placeholder="规格" class="layui-input">-->
+<!--			                    </div>-->
+<!--			                </div>-->
 		
 
 							<div class="layui-form-item">
@@ -67,34 +67,34 @@
 			                        <input type="text" name="qicaixiangqing" autocomplete="off" placeholder="器材详情" class="layui-input">
 			                    </div>
 			                </div>
-		
 
-			              	<div class="layui-form-item layui-hide">
-			                    <label class="layui-form-label">封面</label>
-			                    <div class="layui-input-block">
-			                        <input type="text" name="fengmian" id="fengmian" autocomplete="off" placeholder="封面" class="layui-input">
-			                    </div>
-			                </div>
-			                
-			                <div class="layui-form-item">
-			                    <label class="layui-form-label">封面</label>
-			                    <div class="layui-input-block">
-			                        <div class="layui-upload-drag" id="fengmian_ImgUpload">
-			                          <i class="layui-icon"></i>
-			                          <p>点击上传，或将文件拖拽到此处</p>
-			                          <div class="layui-hide" id="fengmian_ImgUpload_View">
-			                            <hr>
-			                            <img src="" alt="上传成功后渲染" style="max-width: 196px">
-			                          </div>
-			                        </div>
-			                    </div>
-			                </div>     
-		
+
+				<div class="layui-form-item layui-hide">
+					<label class="layui-form-label">封面</label>
+					<div class="layui-input-block">
+						<input type="text" name="fengmian" id="fengmian" autocomplete="off" placeholder="封面" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item" id="cover">
+					<label class="layui-form-label">封面</label>
+					<div class="layui-input-block">
+						<div class="layui-upload-drag" id="fengmian_ImgUpload">
+							<i class="layui-icon"></i>
+							<p>点击上传，或将文件拖拽到此处</p>
+							<div class="layui-hide" id="fengmian_ImgUpload_View">
+								<hr>
+								<img src="" alt="上传成功后渲染" style="max-width: 196px">
+							</div>
+						</div>
+					</div>
+				</div>
+
 
 							<div class="layui-form-item">
 			                    <label class="layui-form-label">发布时间</label>
 			                    <div class="layui-input-block">
-			                        <input type="text" name="fabushijian" autocomplete="off" placeholder="发布时间" class="layui-input datetime-input">
+			                        <input type="text" disabled name="fabushijian" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}" autocomplete="off" placeholder="发布时间" class="layui-input datetime-input">
 			                    </div>
 			                </div>
 		
@@ -143,25 +143,37 @@
           });
         });
 
+		$(function () {
+			const role = '[[${role}]]'
+			if (role === '学生'){
+				$("#fengmian").attr("hidden",true);
+				$("#cover").attr("hidden",true);
+				$("input[name='addtime']").attr("disabled",true)
+				$("input[name='zhuyishixiang']").attr("disabled",true)
+				$("input[name='qicaixiangqing']").attr("disabled",true)
+
+			}
+		})
+
 
 				//拖拽上传 文档：https://www.layui.com/doc/modules/upload.html
-				upload.render({
-					elem: '#fengmian_ImgUpload'
-					,url: FILE_PATH+"/object/"+BucketName //改成您自己的上传接口
-					,field: 'object' //设定文件域的字段名
-					,done: function(result){
-						console.log(result);
-						if (result.code==200) {
-							layer.msg('上传成功');
-							layui.$('#fengmian_ImgUpload_View').removeClass('layui-hide').find('img').attr('src', result.data.objectContent.httpRequest.uri);
-							if(result.data.key!=null){
-								$("#fengmian").val(result.data.key);
-							}
-						} else {
-							layer.msg(result.msg, {icon: 2, time: 1000});
-						}
+		upload.render({
+			elem: '#fengmian_ImgUpload'
+			,url: FILE_PATH+"/object/"+BucketName //改成您自己的上传接口
+			,field: 'object' //设定文件域的字段名
+			,done: function(result){
+				console.log(result);
+				if (result.code==200) {
+					layer.msg('上传成功');
+					layui.$('#fengmian_ImgUpload_View').removeClass('layui-hide').find('img').attr('src', result.data.objectContent.httpRequest.uri);
+					if(result.data.key!=null){
+						$("#fengmian").val(result.data.objectContent.httpRequest.uri);
 					}
-				});
+				} else {
+					layer.msg(result.msg, {icon: 2, time: 1000});
+				}
+			}
+		});
 
 
 

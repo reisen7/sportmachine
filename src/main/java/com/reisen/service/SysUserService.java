@@ -3,6 +3,7 @@ package com.reisen.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.reisen.satoken.SaTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +59,12 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample>{
 	//自定义用户dao
 	@Autowired
 	private TsysUserDao userDao ;
+
+	@Autowired
+	private SysRoleService sysRoleService;
+
+	@Autowired
+	private TSysRoleUserMapper roleUserMapper;
 	
 	/**
 	 * 分页查询
@@ -255,9 +262,19 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample>{
 		return tsysUserMapper.updateByPrimaryKeySelective(record);
 	}
 
-	public String getRole(TsysUser tsysUser){
+	// 获得当前用户的角色
+	public String getRole(){
 
-		return null;
+		TsysUser tsysUser = SaTokenUtil.getUser();
+		String id1 = tsysUser.getId();
+		TsysRoleExample roleExample = new TsysRoleExample();
+		TSysRoleUserExample tSysRoleUserExample = new TSysRoleUserExample();
+		tSysRoleUserExample.createCriteria().andSysUserIdEqualTo(id1);
+
+		TsysRole role = sysRoleService.selectByPrimaryKey(roleUserMapper.selectByExample(tSysRoleUserExample).get(0).getSysRoleId());
+//		map.put("role",role.getName());
+
+		return role.getName();
 	}
 	
 	

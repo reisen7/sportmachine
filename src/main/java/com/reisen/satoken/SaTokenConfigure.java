@@ -42,6 +42,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
 			"/websocket",
 			// 前端
 			"/","/register/**","/echart" ,"/index",
+//			"/EchartsController/**",
 			// 任务调度暂时放开
 			"/quartz/**",
 			// 开放APicontroller

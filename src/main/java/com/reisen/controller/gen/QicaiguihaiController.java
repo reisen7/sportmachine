@@ -86,6 +86,8 @@ public class QicaiguihaiController extends BaseController{
 		modelMap.put("uuid",uuid);
 		List<Tiyuqicai> list = tiyuqicaiService.selectByExample(null);
 		modelMap.put("list",list);
+		String role = sysUserService.getRole();
+		modelMap.put("role",role);
         return prefix + "/add";
     }
 	
@@ -144,6 +146,8 @@ public class QicaiguihaiController extends BaseController{
         map.put("Qicaiguihai", qicaiguihaiService.selectByPrimaryKey(id));
 		List<Tiyuqicai> list = tiyuqicaiService.selectByExample(null);
 		map.put("list",list);
+		String role = sysUserService.getRole();
+		map.put("role",role);
         return prefix + "/edit";
     }
 	

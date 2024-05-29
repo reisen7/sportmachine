@@ -203,6 +203,17 @@ public class OssTemplate implements InitializingBean {
 		amazonS3.deleteObject(bucketName, objectName);
 	}
 
+	/**
+	 *  获得阿里云的地址外链
+	 * @param objectName
+	 * @return
+	 */
+	public String getFileAliyunOssUrl( String objectName){
+
+		String url = "https://" + ossProperties.getBucketName() + "." + ossProperties.getEndpoint() + "/" + objectName;
+		return url;
+	}
+
 	@Override
 	public void afterPropertiesSet() {
 		ClientConfiguration clientConfiguration = new ClientConfiguration();

@@ -10,6 +10,7 @@ import com.reisen.model.auto.Qicaijieyong;
 import com.reisen.satoken.SaTokenUtil;
 import com.reisen.service.QicaijieyongService;
 import com.github.pagehelper.PageInfo;
+import com.reisen.service.SysUserService;
 import com.reisen.service.TiyuqicaiService;
 import com.reisen.util.SnowflakeIdWorker;
 import io.swagger.annotations.Api;
@@ -85,6 +86,8 @@ public class QicaijieyongController extends BaseController{
 		modelMap.put("uuid",uuid);
 		List<Tiyuqicai> list = tiyuqicaiService.selectByExample(null);
 		modelMap.put("list",list);
+		String role = sysUserService.getRole();
+		modelMap.put("role",role);
         return prefix + "/add";
     }
 	
@@ -146,6 +149,8 @@ public class QicaijieyongController extends BaseController{
         map.put("Qicaijieyong", qicaijieyongService.selectByPrimaryKey(id));
 		List<Tiyuqicai> list = tiyuqicaiService.selectByExample(null);
 		map.put("list",list);
+		String role = sysUserService.getRole();
+		map.put("role",role);
         return prefix + "/edit";
     }
 	
@@ -159,6 +164,7 @@ public class QicaijieyongController extends BaseController{
     @ResponseBody
     public AjaxResult editSave(Qicaijieyong qicaijieyong)
     {
+
         return toAjax(qicaijieyongService.updateByPrimaryKeySelective(qicaijieyong));
     }
     

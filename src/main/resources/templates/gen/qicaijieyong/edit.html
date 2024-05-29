@@ -160,6 +160,14 @@
           });
         });
 
+		$(function () {
+			const role = '[[${role}]]'
+			if (role === '学生'){
+				$("input[name='jieyongbianhao']").attr("disabled",true);
+				$("input[name='addtime']").attr("disabled",true);
+
+			}
+		})
 
         form.on('submit(qicaijieyong-update)', function (data) {
         	let loader = layer.load();

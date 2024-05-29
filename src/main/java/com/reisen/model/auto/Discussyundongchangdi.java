@@ -17,7 +17,7 @@ public class Discussyundongchangdi implements Serializable {
 	@ApiModelProperty(value = "创建时间")
 	private Date addtime;
 	
-	@ApiModelProperty(value = "关联表id")
+	@ApiModelProperty(value = "器材")
 	private Long refid;
 	
 	@ApiModelProperty(value = "用户id")

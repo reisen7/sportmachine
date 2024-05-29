@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.reisen.common.domain.AjaxResult;
 import com.reisen.model.auto.Changdiyuyue;
 import com.reisen.model.auto.ChangdiyuyueExample;
+import com.reisen.model.auto.Tiyuqicai;
 import com.reisen.service.ChangdiyuyueService;
+import com.reisen.service.TiyuqicaiService;
 import com.reisen.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,9 @@ public class EchartController {
 
     @Autowired
     private ChangdiyuyueService changdiyuyueService;
+
+    @Autowired
+    private TiyuqicaiService tiyuqicaiService;
 
     @PostMapping("/echart")
     @ResponseBody
@@ -53,5 +58,6 @@ public class EchartController {
         object.put("yData",yData);
 
         return AjaxResult.successData(200,object);
+
     }
 }

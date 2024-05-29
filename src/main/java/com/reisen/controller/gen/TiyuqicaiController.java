@@ -72,6 +72,8 @@ public class TiyuqicaiController extends BaseController{
     @OssConfig
     public String add(ModelMap modelMap)
     {
+		String role = sysUserService.getRole();
+		modelMap.put("role",role);
         return prefix + "/add";
     }
 	
@@ -126,7 +128,8 @@ public class TiyuqicaiController extends BaseController{
     public String edit(@PathVariable("id") String id, ModelMap map)
     {
         map.put("Tiyuqicai", tiyuqicaiService.selectByPrimaryKey(id));
-
+		String role = sysUserService.getRole();
+		map.put("role",role);
         return prefix + "/edit";
     }
 	
@@ -155,9 +158,5 @@ public class TiyuqicaiController extends BaseController{
 		int i=tiyuqicaiService.updateVisible(tiyuqicai);
 		return toAjax(i);
 	}
-
-    
-    
-
 	
 }

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('图标')"/>
+    <link rel="stylesheet" th:href="@{/static/admin/css/other/console1.css}"/>
+</head>
+<body>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">刷新时间</label>
+        <div class="layui-input-block">
+            <input type="number" id="time" min="5" lay-verify="required" placeholder="请输入数字" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+</form>
+
+<div>
+    <div id="echarts-eq" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+    <div id="echarts-borrow" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+    <div id="echarts-return" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+
+
+</div>
+<th:block th:include="include :: footer"/>
+<script>
+    layui.use(['layer', 'echarts', 'element', 'count', 'topBar','code'], function () {
+
+
+        const echarts1 = echarts.init(document.getElementById('echarts-eq'), 'walden');
+        const option1 = {
+            title:{
+                text: "器材库存数量"
+            },
+            xAxis: {
+                type: 'category',
+                data: ""
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    data: "",
+                    type: 'bar'
+                }
+            ]
+        };
+        const echarts2 = echarts.init(document.getElementById('echarts-borrow'), 'walden');
+        const echarts3 = echarts.init(document.getElementById('echarts-return'), 'walden');
+
+
+        $(document).ready(function () {
+            let intervalId = null
+
+            function setNewInterval(intervalValue) {
+                if (intervalId){
+                    clearInterval(intervalId)
+                }
+
+                if (!isNaN(intervalValue) && intervalValue > 0){
+                    intervalId = setInterval(function (){
+                        $.ajax({
+                            url: '/EchartsController/equipmentQuantity',
+                            type: 'post',
+                            success: function (res) {
+                                const data = res.data
+                                echarts1.setOption({
+                                    xAxis:{
+                                        data:data.xData
+                                    },
+                                    series: [
+                                        {
+                                            data: data.yData,
+                                            type: 'bar'
+                                        }
+                                    ]
+                                });
+                            }
+                        });
+                        $.ajax({
+                            url: '/EchartsController/borrowedQuantity',
+                            type: 'post',
+                            // data: {
+                            //     id: 1,
+                            //     name: '张三'
+                            // },
+                            success: function (res) {
+                                const data = res.data
+                                const option = {
+                                    title:{
+                                        text: "器材借用情况"
+                                    },
+                                    xAxis: {
+                                        type: 'category',
+                                        data: data.xData
+                                    },
+                                    yAxis: {
+                                        type: 'value'
+                                    },
+                                    series: [
+                                        {
+                                            data: data.yData,
+                                            type: 'bar'
+                                        }
+                                    ]
+                                };
+
+                                echarts2.setOption(option);
+
+                            }
+                        });
+                        $.ajax({
+                            url: '/EchartsController/returnQuantity',
+                            type: 'post',
+                            // data: {
+                            //     id: 1,
+                            //     name: '张三'
+                            // },
+                            success: function (res) {
+                                const data = res.data
+                                const option = {
+                                    title:{
+                                        text: "器材归还情况"
+                                    },
+                                    xAxis: {
+                                        type: 'category',
+                                        data: data.xData
+                                    },
+                                    yAxis: {
+                                        type: 'value'
+                                    },
+                                    series: [
+                                        {
+                                            data: data.yData,
+                                            type: 'bar'
+                                        }
+                                    ]
+                                };
+
+                                echarts3.setOption(option);
+
+                            }
+                        });
+
+                        console.log("定时获取数据")
+                        console.log(intervalValue)
+                    },intervalValue);
+                }
+            }
+
+            $("#time").on('input propertychange',function () {
+                const intervalValue = parseInt($(this).val()*100,10);
+                console.log(intervalValue)
+                setNewInterval(intervalValue);
+            })
+        })
+
+        echarts1.setOption(option1)
+
+        window.onresize = function () {
+                echarts1.resize();
+                echarts2.resize();
+                echarts3.resize();
+            }
+
+
+
+
+    });
+</script>
+</body>
+</html>

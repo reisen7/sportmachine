@@ -56,7 +56,7 @@
 							<div class="layui-form-item">
 			                    <label class="layui-form-label">借用编号</label>
 			                    <div class="layui-input-block">
-			                        <input type="text" disabled th:value="${uuid}" name="jieyongbianhao" autocomplete="off" placeholder="借用编号" class="layui-input">
+			                        <input type="text" th:value="${uuid}" name="jieyongbianhao" autocomplete="off" placeholder="借用编号" class="layui-input">
 			                    </div>
 			                </div>
 		
@@ -141,6 +141,14 @@
           });
         });
 
+		$(function () {
+			const role = '[[${role}]]'
+			if (role === '学生'){
+				$("input[name='jieyongbianhao']").attr("disabled",true);
+				$("input[name='addtime']").attr("disabled",true);
+
+			}
+		})
 
         //保存
         form.on('submit(qicaiguihai-save)', function (data) {

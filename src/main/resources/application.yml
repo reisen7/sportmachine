@@ -62,7 +62,7 @@ spring :
       #热部署开关
       enabled: true
       #指定热部署的目录
-      additional-paths: src/main/java
+      additional-paths: src/main/resource
       #指定目录不更新
       exclude: test/**
   mvc:   #静态文件

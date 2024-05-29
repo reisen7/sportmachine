@@ -10,6 +10,7 @@ import com.reisen.model.custom.Tablepar;
 import com.reisen.satoken.SaTokenUtil;
 import com.reisen.service.DiscusstiyuqicaiService;
 import com.github.pagehelper.PageInfo;
+import com.reisen.service.TiyuqicaiService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import cn.dev33.satoken.annotation.SaCheckPermission;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 体育器材评论表Controller
@@ -36,7 +39,9 @@ public class DiscusstiyuqicaiController extends BaseController{
 
 	@Autowired
 	private TSysRoleUserMapper roleUserMapper;
-	
+
+	@Autowired
+	private TiyuqicaiService tiyuqicaiService;
 	/**
 	 * 体育器材评论表页面展示
 	 * @param model
@@ -82,6 +87,9 @@ public class DiscusstiyuqicaiController extends BaseController{
 
 		TsysRole role = sysRoleService.selectByPrimaryKey(roleUserMapper.selectByExample(tSysRoleUserExample).get(0).getSysRoleId());
 		modelMap.put("role",role.getName());
+
+		List<Tiyuqicai> list = tiyuqicaiService.selectByExample(null);
+		modelMap.put("list",list);
         return prefix + "/add";
     }
 	
@@ -144,6 +152,9 @@ public class DiscusstiyuqicaiController extends BaseController{
 
 		TsysRole role = sysRoleService.selectByPrimaryKey(roleUserMapper.selectByExample(tSysRoleUserExample).get(0).getSysRoleId());
 		map.put("role",role.getName());
+
+		List<Tiyuqicai> list = tiyuqicaiService.selectByExample(null);
+		map.put("list",list);
 
         return prefix + "/edit";
     }

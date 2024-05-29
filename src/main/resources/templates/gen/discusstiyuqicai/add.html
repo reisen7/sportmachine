@@ -18,9 +18,19 @@
 		
 
 							<div class="layui-form-item">
-			                    <label class="layui-form-label">关联表id</label>
+			                    <label class="layui-form-label">器材</label>
 			                    <div class="layui-input-block">
-			                        <input type="text" name="refid" autocomplete="off" placeholder="关联表id" class="layui-input">
+<!--			                        <input type="text" name="refid" autocomplete="off" placeholder="器材" class="layui-input">-->
+
+									<select lay-verify="required" name="refid" lay-filter="selectOnchange">
+										<option ></option>
+										<option
+												th:each="item:${list}"
+												th:value="${item.id}"
+												th:text="${item.qicaimingcheng}">
+										</option>
+									</select>
+
 			                    </div>
 			                </div>
 		
@@ -94,6 +104,9 @@
 			console.log(role);
 			if (role === '学生'){
 				$("#reply").attr("disabled",true)
+			}
+			if (role === '管理员'){
+				$("input[name='content']").attr("disabled",true)
 			}
 		})
 

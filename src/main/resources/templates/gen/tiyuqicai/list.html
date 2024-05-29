@@ -96,8 +96,14 @@
 	    });
 	    return flag ? str : '';
 	}
-</script>	
-	
+</script>
+
+<script type="text/html" id="imgTpl" >
+    <div onclick="showLarge('{{ d.fengmian }}')">
+        <img src="{{ d.fengmian }}" th:height="40px" th:width="50px">
+    </div>
+</script>
+
 
 
 <th:block th:include="include :: footer"/>
@@ -119,11 +125,11 @@
                 	
                {title: '器材名称', field: 'qicaimingcheng', align: 'center'},
                 	
-        	   {title: '器材类型', field: 'qicaileixing', align: 'center',templet:function(d){
-				  return selectDictLabel(qicaileixing_list, d.qicaileixing);
-			   }},
-                	
-               {title: '规格', field: 'guige', align: 'center'},
+        	   // {title: '器材类型', field: 'qicaileixing', align: 'center',templet:function(d){
+				//   return selectDictLabel(qicaileixing_list, d.qicaileixing);
+			   // }},
+               //
+               // {title: '规格', field: 'guige', align: 'center'},
                 	
                {title: '数量', field: 'shuliang', align: 'center'},
                 	
@@ -131,7 +137,7 @@
                 	
                {title: '器材详情', field: 'qicaixiangqing', align: 'center'},
                 	
-               {title: '封面', field: 'fengmian', align: 'center',templet: '#fengmian-img'},
+               {title: '封面', field: 'fengmian', align: 'center',templet: '#imgTpl'},
                 		
                {title: '发布时间', field: 'fabushijian', align: 'center'},
                 		
@@ -274,6 +280,27 @@
         window.refresh = function () {
             table.reload('tiyuqicai-table');
         }
+
+        //查看大图
+        window.showLarge = function (src) {
+            layer.photos({
+                photos: {
+                    "title": "", //相册标题
+                    "id": 123, //相册id
+                    "start": 0, //初始显示的图片序号，默认0
+                    "data": [   //相册包含的图片，数组格式
+                        {
+                            "alt": "图片名",
+                            "pid": 666, //图片id
+                            "src": src, //原图地址
+                            "thumb": "" //缩略图地址
+                        }
+                    ]
+                }
+                ,anim: 0 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+            })
+        }
+
     })
 </script>
 </html>

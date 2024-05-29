@@ -3,6 +3,9 @@ package com.reisen.satoken;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.reisen.controller.AdminController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +23,8 @@ import cn.dev33.satoken.stp.StpUtil;
 @Component 
 public class StpInterfaceImpl implements StpInterface {
 
+	private static Logger logger = LoggerFactory.getLogger(AdminController.class);
+
 	@Autowired
 	private PermissionDao permissionDao;//权限dao
 	
@@ -36,6 +41,11 @@ public class StpInterfaceImpl implements StpInterface {
     	for (String roleId : getRoleList(loginId, loginType)) {
     		SaSession roleSession = SaSessionCustomUtil.getSessionById("role-" + roleId);
     		List<String> list = roleSession.get("Permission_List", () -> permissionDao.queryPermsList(roleId));
+			logger.debug("=================获得权限==================");
+			list.forEach(x->{
+				logger.debug(x);
+			});
+			logger.debug("=========================================");
     		permList.addAll(list);
 		}
     	return permList;

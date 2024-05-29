@@ -48,7 +48,7 @@ public class SysNoticeController extends BaseController{
 	 */
 	@ApiOperation(value = "分页跳转", notes = "分页跳转")
 	@GetMapping("/view")
-	@SaCheckPermission("gen:sysNotice:view")
+//	@SaCheckPermission("gen:sysNotice:view")
     public String view(ModelMap model)
     {
 		return prefix + "/list";
@@ -64,7 +64,7 @@ public class SysNoticeController extends BaseController{
 	//@Log(title = "公告集合查询", action = "111")
 	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/list")
-	@SaCheckPermission("gen:sysNotice:list")
+//	@SaCheckPermission("gen:sysNotice:list")
 	@ResponseBody
 	public ResultTable list(Tablepar tablepar, String searchText){
 		PageInfo<SysNotice> page=sysNoticeService.list(tablepar,searchText) ; 
