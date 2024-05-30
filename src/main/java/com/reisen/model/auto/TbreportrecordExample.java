@@ -6,9 +6,9 @@ import java.util.List;
 import cn.hutool.core.util.StrUtil;
 
 /**
- * 器材保修 TbreportrecordExample
+ * 器材报修 TbreportrecordExample
  * @author fuce_自动生成
- * @date 2024-04-26 23:52:42
+ * @date 2024-05-31 02:40:35
  */
 public class TbreportrecordExample {
 
@@ -680,6 +680,77 @@ public class TbreportrecordExample {
             return (Criteria) this;
         }
         
+		
+        public Criteria andFormIsNull() {
+            addCriterion("form is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIsNotNull() {
+            addCriterion("form is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormEqualTo(String value) {
+            addCriterion("form =", value, "form");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormNotEqualTo(String value) {
+            addCriterion("form <>", value, "form");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormGreaterThan(String value) {
+            addCriterion("form >", value, "form");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormGreaterThanOrEqualTo(String value) {
+            addCriterion("form >=", value, "form");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormLessThan(String value) {
+            addCriterion("form <", value, "form");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormLessThanOrEqualTo(String value) {
+            addCriterion("form <=", value, "form");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormLike(String value) {
+            addCriterion("form like", value, "form");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormNotLike(String value) {
+            addCriterion("form not like", value, "form");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIn(List<String> values) {
+            addCriterion("form in", values, "form");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormNotIn(List<String> values) {
+            addCriterion("form not in", values, "form");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormBetween(String value1, String value2) {
+            addCriterion("form between", value1, value2, "form");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormNotBetween(String value1, String value2) {
+            addCriterion("form not between", value1, value2, "form");
+            return (Criteria) this;
+        }
+        
 	
 		 public Criteria andLikeQuery(Tbreportrecord record) {
 		 	List<String> list= new ArrayList<String>();
@@ -709,6 +780,9 @@ public class TbreportrecordExample {
 			if(record.getUsername()!=null&&StrUtil.isNotEmpty(record.getUsername().toString())) {
     			 list.add("ifnull(username,'')");
     		}
+			if(record.getForm()!=null&&StrUtil.isNotEmpty(record.getForm().toString())) {
+    			 list.add("ifnull(form,'')");
+    		}
 			if(record.getId()!=null&&StrUtil.isNotEmpty(record.getId().toString())) {
     			list2.add("'%"+record.getId()+"%'");
     		}
@@ -733,6 +807,9 @@ public class TbreportrecordExample {
 			if(record.getUsername()!=null&&StrUtil.isNotEmpty(record.getUsername().toString())) {
     			list2.add("'%"+record.getUsername()+"%'");
     		}
+			if(record.getForm()!=null&&StrUtil.isNotEmpty(record.getForm().toString())) {
+    			list2.add("'%"+record.getForm()+"%'");
+    		}
         	buffer.append(" CONCAT(");
 	        buffer.append(StrUtil.join(",",list));
         	buffer.append(")");
@@ -756,6 +833,7 @@ public class TbreportrecordExample {
     		list.add("ifnull(problemdes,'')");
     		list.add("ifnull(status,'')");
     		list.add("ifnull(username,'')");
+    		list.add("ifnull(form,'')");
         	buffer.append(" CONCAT(");
 	        buffer.append(StrUtil.join(",",list));
         	buffer.append(")");

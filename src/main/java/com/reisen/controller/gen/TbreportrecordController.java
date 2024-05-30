@@ -4,30 +4,32 @@ import com.reisen.common.base.BaseController;
 import com.reisen.common.domain.AjaxResult;
 import com.reisen.common.domain.ResultTable;
 import com.reisen.model.auto.Tiyuqicai;
+import com.reisen.model.auto.TsysUser;
 import com.reisen.model.custom.Tablepar;
 import com.reisen.model.auto.Tbreportrecord;
+import com.reisen.satoken.SaTokenUtil;
 import com.reisen.service.TbreportrecordService;
 import com.github.pagehelper.PageInfo;
 import com.reisen.service.TiyuqicaiService;
+import com.reisen.util.SnowflakeIdWorker;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import com.reisen.common.conf.oss.OssConfig;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 器材保修Controller
+ * 器材报修Controller
  * @ClassName: TbreportrecordController
  * @author fuce
- * @date 2024-04-26 23:52:42
+ * @date 2024-05-31 02:40:35
  */
-@Api(value = "器材保修")
+@Api(value = "器材报修")
 @Controller
 @RequestMapping("/TbreportrecordController")
 public class TbreportrecordController extends BaseController{
@@ -40,8 +42,9 @@ public class TbreportrecordController extends BaseController{
 	@Autowired
 	private TiyuqicaiService tiyuqicaiService;
 	
+	
 	/**
-	 * 器材保修页面展示
+	 * 器材报修页面展示
 	 * @param model
 	 * @return String
 	 * @author fuce
@@ -49,6 +52,7 @@ public class TbreportrecordController extends BaseController{
 	@ApiOperation(value = "分页跳转", notes = "分页跳转")
 	@GetMapping("/view")
 	//@SaCheckPermission("gen:tbreportrecord:view")
+    @OssConfig
     public String view(ModelMap model)
     {
         return prefix + "/list";
@@ -60,7 +64,7 @@ public class TbreportrecordController extends BaseController{
 	 * @param searchText
 	 * @return
 	 */
-	//@Log(title = "器材保修", action = "111")
+	//@Log(title = "器材报修", action = "111")
 	@ApiOperation(value = "分页跳转", notes = "分页跳转")
 	@GetMapping("/list")
 	//@SaCheckPermission("gen:tbreportrecord:list")
@@ -75,10 +79,16 @@ public class TbreportrecordController extends BaseController{
      */
 	@ApiOperation(value = "新增跳转", notes = "新增跳转")
     @GetMapping("/add")
+    @OssConfig
     public String add(ModelMap modelMap)
     {
-		List<Tiyuqicai> tiyuqicaiList = tiyuqicaiService.selectByExample(null);
-		modelMap.put("qicai",tiyuqicaiList);
+		TsysUser tsysUser = SaTokenUtil.getUser();
+		modelMap.put("username",tsysUser.getUsername());
+		modelMap.put("nickname",tsysUser.getNickname());
+		String uuid = SnowflakeIdWorker.getUUID();
+		modelMap.put("uuid",uuid);
+		List<Tiyuqicai> list = tiyuqicaiService.selectByExample(null);
+		modelMap.put("list",list);
         return prefix + "/add";
     }
 	
@@ -87,7 +97,7 @@ public class TbreportrecordController extends BaseController{
      * @param 
      * @return
      */
-	//@Log(title = "器材保修新增", action = "111")
+	//@Log(title = "器材报修新增", action = "111")
 	@ApiOperation(value = "新增", notes = "新增")
 	@PostMapping("/add")
 	//@SaCheckPermission("gen:tbreportrecord:add")
@@ -102,11 +112,11 @@ public class TbreportrecordController extends BaseController{
 	}
 	
 	/**
-	 * 器材保修删除
+	 * 器材报修删除
 	 * @param ids
 	 * @return
 	 */
-	//@Log(title = "器材保修删除", action = "111")
+	//@Log(title = "器材报修删除", action = "111")
 	@ApiOperation(value = "删除", notes = "删除")
 	@DeleteMapping("/remove")
 	//@SaCheckPermission("gen:tbreportrecord:remove")
@@ -129,19 +139,20 @@ public class TbreportrecordController extends BaseController{
 	 */
 	@ApiOperation(value = "修改跳转", notes = "修改跳转")
 	@GetMapping("/edit/{id}")
+    @OssConfig
     public String edit(@PathVariable("id") String id, ModelMap map)
     {
-		List<Tiyuqicai> tiyuqicaiList = tiyuqicaiService.selectByExample(null);
-		map.put("qicai",tiyuqicaiList);
         map.put("Tbreportrecord", tbreportrecordService.selectByPrimaryKey(id));
 
+		List<Tiyuqicai> list = tiyuqicaiService.selectByExample(null);
+		map.put("list",list);
         return prefix + "/edit";
     }
 	
 	/**
      * 修改保存
      */
-    //@Log(title = "器材保修修改", action = "111")
+    //@Log(title = "器材报修修改", action = "111")
 	@ApiOperation(value = "修改保存", notes = "修改保存")
     //@SaCheckPermission("gen:tbreportrecord:edit")
     @PostMapping("/edit")

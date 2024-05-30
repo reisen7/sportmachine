@@ -8,37 +8,26 @@
     <div class="mainBox">
         <div class="main-container">
             <div class="main-container">
-				<input type="hidden" id="roles" th:value="${qicai}">
 
 							<div class="layui-form-item">
-			                    <label class="layui-form-label">器材id</label>
+			                    <label class="layui-form-label">器材</label>
 			                    <div class="layui-input-block">
-<!--			                        <input type="text" name="equimentid" autocomplete="off" placeholder="器材id" class="layui-input">-->
-
-									<select lay-verify="required" id="selectQicai" name="equimentid" lay-filter="selectOnchange">
-										<option ></option>
-										<option
-												th:each="item:${qicai}"
-												th:value="${item.id}"
-												th:text="${item.id}" >
-										</option>
-									</select>
-
-								</div>
+			                        <input type="text" name="equimentid" autocomplete="off" placeholder="器材" class="layui-input">
+			                    </div>
 			                </div>
 		
 
 							<div class="layui-form-item">
 			                    <label class="layui-form-label">器材名称</label>
 			                    <div class="layui-input-block">
-<!--			                        <input disabled type="text" id="name" name="name" autocomplete="off" placeholder="器材名称" class="layui-input">-->
+<!--			                        <input type="text" name="name" autocomplete="off" placeholder="器材名称" class="layui-input">-->
 
 									<select lay-verify="required" name="name" lay-filter="selectOnchange">
 										<option ></option>
 										<option
-												th:each="item:${qicai}"
-												th:value="${item.qicaimingcheng}"
-												th:text="${item.qicaimingcheng}" >
+												th:each="item:${list}"
+												th:value="${item.id}"
+												th:text="${item.qicaimingcheng}">
 										</option>
 									</select>
 			                    </div>
@@ -46,9 +35,9 @@
 		
 
 							<div class="layui-form-item">
-			                    <label class="layui-form-label">用户id</label>
+			                    <label class="layui-form-label">用户</label>
 			                    <div class="layui-input-block">
-			                        <input type="text" name="userid" autocomplete="off" placeholder="用户id" class="layui-input">
+			                        <input type="text" name="userid" th:value="${username}" autocomplete="off" placeholder="用户" class="layui-input">
 			                    </div>
 			                </div>
 		
@@ -56,7 +45,7 @@
 							<div class="layui-form-item">
 			                    <label class="layui-form-label">报修日期</label>
 			                    <div class="layui-input-block">
-			                        <input type="text" name="reportdate" autocomplete="off" placeholder="报修日期" class="layui-input datetime-input">
+			                        <input type="text" name="reportdate" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}" autocomplete="off" placeholder="报修日期" class="layui-input datetime-input">
 			                    </div>
 			                </div>
 		
@@ -73,7 +62,8 @@
 			                    <label class="layui-form-label">报修状态</label>
 			                    <div class="layui-input-block">
 			                        
-			                    	<select name="status" th:with="type=${@dict.getType('status_type')}">
+			                    	<select name="status" th:with="type=${@dict.getType('yes_or_no')}">
+										<option selected>请选择</option>
 										<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
 									</select>
 			                    	
@@ -84,9 +74,31 @@
 							<div class="layui-form-item">
 			                    <label class="layui-form-label">用户姓名</label>
 			                    <div class="layui-input-block">
-			                        <input type="text" name="username" autocomplete="off" placeholder="用户姓名" class="layui-input">
+			                        <input type="text" name="username" th:value="${nickname}" autocomplete="off" placeholder="用户姓名" class="layui-input">
 			                    </div>
 			                </div>
+		
+
+			              	<div class="layui-form-item layui-hide">
+			                    <label class="layui-form-label">报修单</label>
+			                    <div class="layui-input-block">
+			                        <input type="text" name="form" id="form" autocomplete="off" placeholder="报修单" class="layui-input">
+			                    </div>
+			                </div>
+			                
+			                <div class="layui-form-item">
+			                    <label class="layui-form-label">报修单</label>
+			                    <div class="layui-input-block">
+			                        <div class="layui-upload-drag" id="form_ImgUpload">
+			                          <i class="layui-icon"></i>
+			                          <p>点击上传，或将文件拖拽到此处</p>
+			                          <div class="layui-hide" id="form_ImgUpload_View">
+			                            <hr>
+<!--			                            <img src="" alt="上传成功后渲染" style="max-width: 196px">-->
+			                          </div>
+			                        </div>
+			                    </div>
+			                </div>     
 		
 
             </div>
@@ -107,10 +119,14 @@
 </form>
 <th:block th:include="include :: footer"/>
 <script>
-    layui.use(['form','laydate','jquery'], function () {
+    layui.use(['form','laydate','upload','jquery'], function () {
         let form = layui.form;
         let $ = layui.jquery;
         let MODULE_PATH = rootPath+"/TbreportrecordController";
+
+		let FILE_PATH = rootPath+"/oss";
+        let upload = layui.upload;
+        let BucketName='[[${BucketName}]]';
 		var laydate = layui.laydate;
         //同时绑定多个
         lay('.datetime-input').each(function(){
@@ -121,34 +137,28 @@
           });
         });
 
-		// $(function () {
-		// 	$("#selectQicai").change(function () {
-		// 		console.log(111)
-		// 		var qicai = $("#qicai").value;
-		// 		console.log(qicai)
-		// 		var id = $('#selectQicai').find('option:selected').val()
-		// 		for (var i=0;i<qicai.length;i++){
-		// 			if (qicai[i].id == id){
-		// 				$("#name").val(qicai[i].qicaimingcheng)
-		// 			}
-		// 		}
-		// 	})
-		// });
 
-		// form.on('select(selectOnchange)', function(data) {
-		// 	/*<![CDATA[*/
-		// 	console.log(111)
-		// 	var qicai = $("#roles").val();
-		// 	console.log(qicai)
-		// 	var id = $('#selectQicai').find('option:selected').val()
-		// 	for (var i=0;i<qicai.length;i++){
-		// 		if (qicai[i].id == id){
-		// 			$("#name").val(qicai[i].qicaimingcheng)
-		// 		}
-		// 	}
-		// 	/*]]>*/
-		//
-		// });
+				//拖拽上传 文档：https://www.layui.com/doc/modules/upload.html
+				upload.render({
+					elem: '#form_ImgUpload'
+					,url: FILE_PATH+"/object/"+BucketName //改成您自己的上传接口
+					,field: 'object' //设定文件域的字段名
+					,accept: 'file'
+					,done: function(result){
+						console.log(result);
+						if (result.code==200) {
+							layer.msg('上传成功');
+							layui.$('#form_ImgUpload_View').removeClass('layui-hide').find('img').attr('src', result.data.objectContent.httpRequest.uri);
+							if(result.data.key!=null){
+								$("#form").val(result.data.objectContent.httpRequest.uri);
+							}
+						} else {
+							layer.msg(result.msg, {icon: 2, time: 1000});
+						}
+					}
+				});
+
+
 
         //保存
         form.on('submit(tbreportrecord-save)', function (data) {

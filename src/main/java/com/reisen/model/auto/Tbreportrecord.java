@@ -14,26 +14,29 @@ public class Tbreportrecord implements Serializable {
 	@ApiModelProperty(value = "主键")
 	private Integer id;
 	
-	@ApiModelProperty(value = "器材id")
+	@ApiModelProperty(value = "器材")
 	private Integer equimentid;
 	
 	@ApiModelProperty(value = "器材名称")
 	private String name;
 	
-	@ApiModelProperty(value = "用户id")
+	@ApiModelProperty(value = "用户")
 	private String userid;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-	@ApiModelProperty(value = "保修日期")
+	@ApiModelProperty(value = "报修日期")
 	private Date reportdate;
 	
 	@ApiModelProperty(value = "问题描述")
 	private String problemdes;
 	
-	@ApiModelProperty(value = "保修状态")
+	@ApiModelProperty(value = "报修状态")
 	private String status;
 	
 	@ApiModelProperty(value = "用户姓名")
 	private String username;
+	
+	@ApiModelProperty(value = "报修单")
+	private String form;
 	
 	@JsonProperty("id")
 	public Integer getId() {
@@ -99,9 +102,17 @@ public class Tbreportrecord implements Serializable {
 	public void setUsername(String username) {
 		this.username =  username;
 	}
+	@JsonProperty("form")
+	public String getForm() {
+		return form;
+	}
+
+	public void setForm(String form) {
+		this.form =  form;
+	}
 
 
-	public Tbreportrecord(Integer id,Integer equimentid,String name,String userid,Date reportdate,String problemdes,String status,String username) {
+	public Tbreportrecord(Integer id,Integer equimentid,String name,String userid,Date reportdate,String problemdes,String status,String username,String form) {
 		
 		this.id = id;
 		
@@ -118,6 +129,8 @@ public class Tbreportrecord implements Serializable {
 		this.status = status;
 		
 		this.username = username;
+		
+		this.form = form;
 		
 	}
 

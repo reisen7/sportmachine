@@ -10,6 +10,7 @@
     <result column="problemdes" jdbcType="VARCHAR" property="problemdes" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="form" jdbcType="VARCHAR" property="form" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -78,7 +79,8 @@
      	reportdate,
      	problemdes,
      	status,
-   	  	username
+     	username,
+   	  	form
   	
   </sql>
   
@@ -123,7 +125,8 @@
       reportdate,
       problemdes,
       status,
-   	  username
+      username,
+   	  form
     )
     values (
      	#{id,jdbcType=INTEGER},
@@ -133,7 +136,8 @@
      	#{reportdate,jdbcType=TIMESTAMP},
      	#{problemdes,jdbcType=VARCHAR},
      	#{status,jdbcType=VARCHAR},
-   	  #{username,jdbcType=VARCHAR}
+     	#{username,jdbcType=VARCHAR},
+   	  #{form,jdbcType=VARCHAR}
     )
   </insert>
   
@@ -172,6 +176,10 @@
       <if test="username != null">
         username,
       </if>
+    
+      <if test="form != null">
+        form,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -197,6 +205,9 @@
       </if>
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="form != null">
+        #{form,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -235,6 +246,9 @@
       <if test="record.username != null">
         username = #{record.username,jdbcType=VARCHAR},
       </if>
+      <if test="record.form != null">
+        form = #{record.form,jdbcType=VARCHAR},
+      </if>
      
     </set>
     <if test="_parameter != null">
@@ -261,7 +275,9 @@
     	 
     	 status = #{record.status,jdbcType=VARCHAR},
     	 
-    	 username = #{record.username,jdbcType=VARCHAR}
+    	 username = #{record.username,jdbcType=VARCHAR},
+    	 
+    	 form = #{record.form,jdbcType=VARCHAR}
     
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -300,6 +316,10 @@
       <if test="username != null ">
         username = #{username,jdbcType=VARCHAR},
       </if>
+      
+      <if test="form != null ">
+        form = #{form,jdbcType=VARCHAR},
+      </if>
     </set>
     
     where 
@@ -325,8 +345,10 @@
 		problemdes = #{problemdes,jdbcType=VARCHAR},
 	  
 		status = #{status,jdbcType=VARCHAR},
+	  
+		username = #{username,jdbcType=VARCHAR},
 		
-		username = #{username,jdbcType=VARCHAR}
+		form = #{form,jdbcType=VARCHAR}
 	
     where 
     

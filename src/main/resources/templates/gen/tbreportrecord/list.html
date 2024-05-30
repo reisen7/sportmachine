@@ -55,20 +55,24 @@
 <script type="text/html" id="status-type">
 	
 
-	{{#if (d.status == 0) { }}
-    <span class="layui-badge layui-bg-important-blue">待处理</span>
-
 	{{#if (d.status == 1) { }}
-    <span class="layui-badge layui-bg-warning-blue">处理中</span>
+    <span class="layui-badge layui-bg-default-blue">是</span>
 
-	{{#if (d.status == 2) { }}
-    <span class="layui-badge layui-bg-success-blue">已完成</span>
+	{{#if (d.status == -1) { }}
+    <span class="layui-badge layui-bg-info-blue">否</span>
     {{# } }}
+</script>
+			
+<script type="text/html" id="form-img">
+
+    <div class="tc mlr50 cupointer" >
+    <a href="{{d.form}}" target="_blank" class="mt5 fs16">报修单</a>
+    </div>
 </script>
 
 
 <script type="text/javascript" th:inline="javascript">
-	var status_list = [[${@dict.getType('status_type')}]];
+	var status_list = [[${@dict.getType('yes_or_no')}]];
 	
 	
 	window.selectDictLabel=function(datas, value) {
@@ -104,6 +108,7 @@
         let table = layui.table;
         let form = layui.form;
         let $ = layui.jquery;
+		 let BUCKETURL_PATH='[[${bucketURL}]]';
 		
         let MODULE_PATH = rootPath+"/TbreportrecordController/";
         let cols = [
@@ -112,11 +117,11 @@
                 	
                {title: '主键', field: 'id', align: 'center'},
                 	
-               {title: '器材id', field: 'equimentid', align: 'center'},
+               {title: '器材', field: 'equimentid', align: 'center'},
                 	
                {title: '器材名称', field: 'name', align: 'center'},
                 	
-               {title: '用户id', field: 'userid', align: 'center'},
+               {title: '用户', field: 'userid', align: 'center'},
                 		
                {title: '报修日期', field: 'reportdate', align: 'center'},
                 	
@@ -127,6 +132,8 @@
 			   }},
                 	
                {title: '用户姓名', field: 'username', align: 'center'},
+                	
+               {title: '报修单', field: 'form', align: 'center',templet: '#form-img'},
                 
                {title: '操作', toolbar: '#tbreportrecord-bar', align: 'center'}
             ]
@@ -172,6 +179,94 @@
             table.reload('tbreportrecord-table', {page: {curr: 1}, where: data.field})
             return false;
         });
+
+
+        //获取文件
+        function getProjectFiles(type,xmid,title) {
+            var fileParam = {
+                pageNo: 1,
+                pageSize: 10,
+                xmId: xmid,
+                cxlx: type,
+            };
+            $.ajax({
+                url: "/prod/getProjectFiles",
+                type: "POST",
+                data: fileParam,
+                dataType: "JSON",
+                success: function (ret) {
+                    if (ret && ret['code'] > 0) {
+                        //渲染界面
+                        var dataList = ret['list'];
+                        //通过layui进行先预览，在下载
+                        showFile(dataList[0]["附件路径"],title,true,false);
+                        //这个是之前写的第一种，直接下载pdf文件
+                        // download(dataList[0]["附件名"],dataList[0]["附件路径"]);
+                    }
+                }
+            })
+        }
+
+
+        //文件下载
+        function download(fileName,filePath){
+            window.open("/downloadTwo?fileName="+encodeURI(fileName)+"&downUrl="+filePath);
+            return ;
+        }
+
+
+//打开新的页面
+        function openNewWindow1(action) {
+            if (!action) return;
+            var form = $("<form method='get'></form>").attr("id", "toPageForm_" + new Date().getTime());
+            $("body").append(form);
+            form.attr("action", action).submit();
+        }
+
+        //预览下载
+        function showFile(url, title, isDownload, jump) {
+            if(!title || title === "") title = "文件";
+            console.log(url);
+            let btnArry = ['已阅'];
+            if(isDownload) {
+                btnArry.push('下载');
+            }
+            // 是否要跳转到别的页面
+            if(jump){
+                openNewWindow1(url);
+                return;
+            }
+            layer.open({
+                type: 1
+                ,title: title
+                ,area: ['1000px', '700px']
+                ,shade: 0.5
+                ,scrollbar: false
+                ,maxmin: true
+                ,cancel: function(index, layero){
+                    layer.close(index)
+                }
+                ,offset: [
+                    -($(window).height() * 0.02)
+                    ,($(window).width() * 0.2)
+                ]
+                ,content: '<iframe src="/res/js/pdfjs/pdfjs-2.4.456-es5-dist/web/viewer.html?file=' + url + '&v=' +new Date().getTime()+ '" style="width: 99%; height: 99%;"></iframe>'
+                ,btn: btnArry
+                ,yes: function(){
+                    layer.closeAll();
+                }
+                ,btn2: function(){
+                    window.location.href = url;
+                }
+                ,zIndex: layer.zIndex //重点1
+                ,success: function(layero){
+                    let btn = layero.find('.layui-layer-btn').find('.layui-layer-btn1');
+                    btn.attr({class: 'layui-btn layui-btn-normal',
+                        style: 'background-color: #1E9FFF!important;',
+                    });
+                }
+            });
+        }
 
 
         //添加
@@ -251,10 +346,110 @@
         }
         
         
+		 //查看
+        window.view = function (obj) {
+            layer.open({
+                type: 1,
+                title: '查看',
+                shade: 0.1,
+                area: ['500px', '500px'],
+                content: "<img style=\"width:500px\" src=\""+BUCKETURL_PATH+"/"+obj+"\">"
+            });
+        }
         //刷新按钮
         window.refresh = function () {
             table.reload('tbreportrecord-table');
         }
+
+        //获取文件
+        function getProjectFiles(type,xmid,title) {
+            var fileParam = {
+                pageNo: 1,
+                pageSize: 10,
+                xmId: xmid,
+                cxlx: type,
+            };
+            $.ajax({
+                url: "/prod/getProjectFiles",
+                type: "POST",
+                data: fileParam,
+                dataType: "JSON",
+                success: function (ret) {
+                    if (ret && ret['code'] > 0) {
+                        //渲染界面
+                        var dataList = ret['list'];
+                        //通过layui进行先预览，在下载
+                        showFile(dataList[0]["附件路径"],title,true,false);
+                        //这个是之前写的第一种，直接下载pdf文件
+                        // download(dataList[0]["附件名"],dataList[0]["附件路径"]);
+                    }
+                }
+            })
+        }
+
+
+        //文件下载
+        function download(fileName,filePath){
+            window.open("/downloadTwo?fileName="+encodeURI(fileName)+"&downUrl="+filePath);
+            return ;
+        }
+
+
+//打开新的页面
+        function openNewWindow1(action) {
+            if (!action) return;
+            var form = $("<form method='get'></form>").attr("id", "toPageForm_" + new Date().getTime());
+            $("body").append(form);
+            form.attr("action", action).submit();
+        }
+
+        //预览下载
+        function showFile(url, title, isDownload, jump) {
+            if(!title || title === "") title = "文件";
+            console.log(url);
+            let btnArry = ['已阅'];
+            if(isDownload) {
+                btnArry.push('下载');
+            }
+            // 是否要跳转到别的页面
+            if(jump){
+                openNewWindow1(url);
+                return;
+            }
+            layer.open({
+                type: 1
+                ,title: title
+                ,area: ['1000px', '700px']
+                ,shade: 0.5
+                ,scrollbar: false
+                ,maxmin: true
+                ,cancel: function(index, layero){
+                    layer.close(index)
+                }
+                ,offset: [
+                    -($(window).height() * 0.02)
+                    ,($(window).width() * 0.2)
+                ]
+                ,content: '<iframe src="/res/js/pdfjs/pdfjs-2.4.456-es5-dist/web/viewer.html?file=' + url + '&v=' +new Date().getTime()+ '" style="width: 99%; height: 99%;"></iframe>'
+                ,btn: btnArry
+                ,yes: function(){
+                    layer.closeAll();
+                }
+                ,btn2: function(){
+                    window.location.href = url;
+                }
+                ,zIndex: layer.zIndex //重点1
+                ,success: function(layero){
+                    let btn = layero.find('.layui-layer-btn').find('.layui-layer-btn1');
+                    btn.attr({class: 'layui-btn layui-btn-normal',
+                        style: 'background-color: #1E9FFF!important;',
+                    });
+                }
+            });
+        }
+
+
+
     })
 </script>
 </html>

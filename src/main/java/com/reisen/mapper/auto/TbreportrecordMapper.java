@@ -6,10 +6,10 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 /**
- * 器材保修 TbreportrecordMapper
+ * 器材报修 TbreportrecordMapper
  * @author fuce_自动生成
  * @email ${email}
- * @date 2024-04-26 23:52:42
+ * @date 2024-05-31 02:40:35
  */
 public interface TbreportrecordMapper {
 

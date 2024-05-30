@@ -17,12 +17,12 @@ import com.reisen.util.SnowflakeIdWorker;
 import com.reisen.util.StringUtils;
 
 /**
- * 器材保修 TbreportrecordService
+ * 器材报修 TbreportrecordService
  * @Title: TbreportrecordService.java 
  * @Package com.reisen.service 
  * @author fuce_自动生成
  * @email ${email}
- * @date 2024-04-26 23:52:42  
+ * @date 2024-05-31 02:40:35  
  **/
 @Service
 public class TbreportrecordService implements BaseService<Tbreportrecord, TbreportrecordExample>{
