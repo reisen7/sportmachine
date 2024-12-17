@@ -130,4 +130,4 @@ oss:
   secret-key: FJ5c90Mjp1mnCbA04wSwWa9txAHGUs # 上文创建的SK
   bucket-name: sportmachine  # 上文创建的桶名称
 
-ai-key: sk-44ea43ae41f748fba206a3c7b6d8f3e8
+ai-key: 
